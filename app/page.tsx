@@ -1,7 +1,23 @@
+"use client"
 import Image from "next/image";
 import { Button } from "@/components/ui/button"; // Ensure the casing matches the file name
+import { signIn } from "next-auth/react"; // Import signIn from NextAuth
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 export default function Home() {
+  const handleSignIn = (provider: string) => {
+    signIn(provider);
+};
+
   return (
     <main className="flex min-h-screen flex-col p-4 m-2 w-100vw overflow-x-hidden"> {/* Added overflow-hidden */}
       <nav className="w-full flex justify-between mb-10">
@@ -10,7 +26,33 @@ export default function Home() {
           <a href="#features">Features</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
-          <Button variant="default" size="sm">Login</Button>
+          <Dialog>
+          <DialogTrigger asChild><Button variant="default" size="sm">Login</Button></DialogTrigger>
+          <DialogContent>
+            <DialogHeader className="items-center justify-center">
+              <DialogTitle>Login to Notee</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col gap-2 items-start">
+                            <Button
+                                onClick={() => handleSignIn("google")}
+                                variant="ghost" size="sm"
+                                className="w-full items-center justify-start"
+                            >
+                              <Image src="/google.png" alt="Google" width={15} height={15} className="mr-2" />
+                                Continue with Google
+                            </Button>
+                            <Button
+                                onClick={() => handleSignIn("microsoft")}
+                                variant="ghost" size="sm"
+                                className="w-full items-center justify-start"
+                            >
+                              <Image src="/microsoft.png" alt="Microsoft" width={15} height={15} className="mr-2" />
+                                Continue with Microsoft
+                            </Button>
+                        </div>
+          </DialogContent>
+        </Dialog>
+
         </div>
       </nav>
 
@@ -33,6 +75,7 @@ export default function Home() {
       <footer className="mt-10">
         <p>&copy; 2023 Notee. All rights reserved.</p>
       </footer>
+
     </main>
   );
 }
